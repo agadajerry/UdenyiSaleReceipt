@@ -409,7 +409,7 @@ public class SelectedItem extends AppCompatActivity {
             //
             Paragraph adminName = new Paragraph("Authorized By:----------------------  Signed  ----------");
             adminName.setSpacingBefore(20);
-            adminName.setSpacingAfter(60);
+            adminName.setSpacingAfter(70);
             adminName.setAlignment(Element.ALIGN_CENTER);
             doc.add(adminName);
 
@@ -418,7 +418,8 @@ public class SelectedItem extends AppCompatActivity {
             BarcodeQRCode barCode = new BarcodeQRCode("Udenyi Resources- 07036617433",1000,1000,null);
 
             Image codeQRImage =barCode.getImage();
-            codeQRImage.scaleAbsolute(100,100);
+            codeQRImage.scaleAbsolute(150,150);
+
             doc.add(codeQRImage);
 
             Toast.makeText(this, "The file is created Successfully", Toast.LENGTH_LONG).show();

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">UdenyiSale</string>
+    <string name="app_name">UdenyiApp</string>
     <string name="businessTitle">Sales Receipt</string>
     <string name="productName">Enter Product Name</string>
     <string name="quantity">Enter Quantity</string>
