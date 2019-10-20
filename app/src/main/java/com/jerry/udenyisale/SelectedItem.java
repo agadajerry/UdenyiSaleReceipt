@@ -3,10 +3,14 @@ package com.jerry.udenyisale;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,12 +22,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.transition.Slide;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.itextpdf.text.BaseColor;
@@ -56,19 +64,23 @@ import static androidx.core.content.FileProvider.getUriForFile;
 
 public class SelectedItem extends AppCompatActivity {
 
-    TextView listText = null;
+    TextView grandTotal = null;
     // private ArrayList<Stock> stocks = new ArrayList<Stock>();
     ArrayList<Stock> newList = MainActivity.stocks;
     double totalAmout = 0.00;
+   // BottomNavigationView bottomNavigationView;
     String lines = "------------------------------------------------------------\n";
-    Button fab;
+  //  Button fab;
     final private int REQUEST_CODE_PERMISSION = 111;
     File pdfFile;//pdf storage file object
     TextInputEditText cusName;
     TextInputEditText address;
     EditText dateText;
-    Button clearBtn;
-    //business address and discriptions
+   // Button clearBtn;
+    RecyclerView recyclerView;
+    Context context;
+    BottomNavigationView bottomNavigationView;
+
 
 
 
@@ -76,16 +88,38 @@ public class SelectedItem extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_item);
-        listText =  findViewById(R.id.itemListText);
-        fab =  findViewById(R.id.fabBtn);
-        clearBtn = findViewById(R.id.fabClear);
+        grandTotal =  findViewById(R.id.grandTotal);
+        recyclerView = findViewById(R.id.relCyclerV);
+        bottomNavigationView = findViewById(R.id.bottomNavigate);
 
-        clearBtn.setOnClickListener(new View.OnClickListener() {
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                clearArray();
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                switch(menuItem.getItemId()){
+
+                    case R.id.printId:
+                        showCustomerDialog();
+                        break;
+                    case R.id.clearId:
+                        clearArray();
+                        break;
+                }
+                return true;
             }
         });
+
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager lineManger = new LinearLayoutManager(context);
+        recyclerView.setLayoutManager(lineManger);
+
+        // method that initalise the adapter
+        initializeAdapter();
+
+
+
+
 
         itemListMethod();
 
@@ -96,6 +130,32 @@ public class SelectedItem extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.navigation_items,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.printId:
+                showCustomerDialog();
+                break;
+            case R.id.clearId:
+                clearArray();
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void initializeAdapter() {
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(newList);
+        recyclerView.setAdapter(adapter);
+    }
+
     private void clearArray() {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Erase All");
@@ -104,7 +164,7 @@ public class SelectedItem extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 newList.clear();//clear arraylist contents
-                listText.setText("");
+               // totalPrice_Text.setText("");
                 finish();
                 Toast.makeText(SelectedItem.this,"Selected Items Erased!!!",Toast.LENGTH_SHORT).show();
             }
@@ -120,23 +180,19 @@ public class SelectedItem extends AppCompatActivity {
 
     private void itemListMethod() {
 
-        for (int i = 0; i < newList.size(); i++) {
 
-            listText.append(lines);
-            listText.append("Product Name-->: " + newList.get(i).getItemName() + "\n" + "quantity-->: " + newList.get(i).getQuantity() + "\n"
-                    + "Unit Price-->" + newList.get(i).getUnitPrice() + "\n" + "Total Price--> " + (newList.get(i).getQuantity() * newList.get(i).getUnitPrice()) + "\n");
-        }
         for (int i = 0; i < newList.size(); i++) {
             totalAmout += newList.get(i).getSumTotal();
 
         }
-        listText.append("----------------------------------------------------\n");
-        listText.append("Grand Total-->" + totalAmout + " Naira\n");
-        listText.append("----------------------------------------------------\n");
+
+        grandTotal.setText("Grand Total\n" + totalAmout + " Naira\n");
+
 
     }
 
-    public void fabListener(View view) {
+
+    public void showCustomerDialog() {
 
 
 //dialog for customer details
@@ -195,11 +251,9 @@ public class SelectedItem extends AppCompatActivity {
 
     }
 
-    public void backBtn(View view) {
-        Intent backIntent = new Intent(SelectedItem.this, MainActivity.class);
-        startActivity(backIntent);
-        //backIntent
-    }
+    //menu method
+
+
 
 
     //pdf file creation method
@@ -423,7 +477,7 @@ public class SelectedItem extends AppCompatActivity {
             doc.add(codeQRImage);
 
             Toast.makeText(this, "The file is created Successfully", Toast.LENGTH_LONG).show();
-            listText.setText("PDF file is created in Documents folder inside internal memory");
+           // totalPrice_Text.setText("PDF in Documents  internal memory");
             doc.close();
 
         }

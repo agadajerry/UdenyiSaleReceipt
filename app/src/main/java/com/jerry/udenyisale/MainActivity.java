@@ -67,14 +67,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                if (stocks.size() < 1) {
+                    Toast.makeText(MainActivity.this, "No product is in the List", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent listIntent = new Intent(MainActivity.this, SelectedItem.class);
+                    ActivityOptionsCompat compat = ActivityOptionsCompat
+                            .makeSceneTransitionAnimation(MainActivity.this, null);
 
+                    startActivity(listIntent, compat.toBundle());
 
-                Intent listIntent = new Intent(MainActivity.this,SelectedItem.class);
-                ActivityOptionsCompat compat = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(MainActivity.this,null);
-
-                startActivity(listIntent ,compat.toBundle());
-
+                }
             }
         });
         //transaction of this activity to next

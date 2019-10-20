@@ -1,101 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backgrond_undi"
+    android:background="@color/colorPrimary"
     tools:context=".SelectedItem">
 
 
-    <LinearLayout
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="80dp"
+        android:id="@+id/relCyclerV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-
-
-        <androidx.cardview.widget.CardView
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="20dp"
-            app:cardElevation="20dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/iameBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_back"
-                    android:background="#ffff"
-                    android:layout_marginTop="7dp"
-                    android:onClick="backBtn"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/item_list"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="20dp"
-                    android:fontFamily="cursive"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
+        android:background="@color/colorAccent"
+        layout_alignParentBottom ="true"
+        app:itemTextColor="@color/textColor"
+        app:menu="@menu/navigation_items">
         <TextView
-            android:id="@+id/itemListText"
+            android:id="@+id/grandTotal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/textColor"
+            android:text="Grand Total"
             android:gravity="center"
-
-            android:textColor="@color/colorAccent"
-            android:textSize="14sp" />
-
-
-        <Button
-            android:id="@+id/fabBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/colorAccent"
-            android:drawableTop="@drawable/ic_printer"
-            android:onClick="fabListener"
-            android:text="@string/print"
+            android:textStyle="bold"
             android:textColor="@color/textColor"
-            app:rippleColor="#3d3d3d" />
+            android:textSize="15sp"
+            android:layout_alignTop="@+id/bottomNavigate"/>
 
-        <Button
-            android:id="@+id/fabClear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="30dp"
-            android:background="@color/colorAccent"
-            android:drawableTop="@drawable/ic_delete_forever"
-
-            android:text="@string/delete"
-            android:textColor="@color/textColor"
-            app:rippleColor="#3d3d3d" />
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 
 
 
-    </LinearLayout>
-
-
-</ScrollView>
+</RelativeLayout>

@@ -109,7 +109,7 @@
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/custom_input"
                                 android:hint="@string/productName"
-                                android:inputType="text"
+                                android:inputType="textCapWords"
                                 android:padding="12dp"
                                 android:layout_marginStart="20dp"
                                 android:layout_marginEnd="20dp"/>
