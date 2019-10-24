@@ -36,6 +36,7 @@
             android:textSize="15sp"
             android:layout_alignTop="@+id/bottomNavigate"/>
 
+
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 

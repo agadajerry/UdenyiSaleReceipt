@@ -68,9 +68,8 @@ public class SelectedItem extends AppCompatActivity {
     // private ArrayList<Stock> stocks = new ArrayList<Stock>();
     ArrayList<Stock> newList = MainActivity.stocks;
     double totalAmout = 0.00;
-   // BottomNavigationView bottomNavigationView;
-    String lines = "------------------------------------------------------------\n";
-  //  Button fab;
+
+   // Button backB;
     final private int REQUEST_CODE_PERMISSION = 111;
     File pdfFile;//pdf storage file object
     TextInputEditText cusName;
@@ -92,6 +91,7 @@ public class SelectedItem extends AppCompatActivity {
         recyclerView = findViewById(R.id.relCyclerV);
         bottomNavigationView = findViewById(R.id.bottomNavigate);
 
+//************************************************************************************************
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -118,38 +118,11 @@ public class SelectedItem extends AppCompatActivity {
         initializeAdapter();
 
 
-
-
-
         itemListMethod();
 
-        // enter transition from activity A.
-        Slide slide = new Slide();
-        slide.setDuration(800);
-        getWindow().setEnterTransition(slide);
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navigation_items,menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.printId:
-                showCustomerDialog();
-                break;
-            case R.id.clearId:
-                clearArray();
-                break;
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     private void initializeAdapter() {
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(newList);
@@ -231,10 +204,11 @@ public class SelectedItem extends AppCompatActivity {
                     try {
 
                         createPDF();
-                        openExternalMemory();
+                      openExternalMemory();
 
                         newList.clear();// clearing arrayList after the print button is clicked
 
+                        grandTotal.setText("Reciept\n inside documents,\n internal Memory");
                     } catch (FileNotFoundException ex) {
                         ex.printStackTrace();
                     } catch (DocumentException e) {
@@ -384,12 +358,14 @@ public class SelectedItem extends AppCompatActivity {
 
             //table of items bought
             //column width
-            float[] columnWidth = {7f, 1.5f, 2f, 2.2f};
+            float[] columnWidth = {1f, 7f, 1.5f, 2f, 2.2f};
             //pdf table
             PdfPTable table = new PdfPTable(columnWidth);
             //table width percentage of the page width
             table.setWidthPercentage(90f);
             table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+
+            table.addCell("S/No ");
             table.addCell("Product Descriptions");
             table.addCell("Quantity");
             table.addCell("Unit Price");
@@ -401,6 +377,7 @@ public class SelectedItem extends AppCompatActivity {
                 cells[i].setBackgroundColor(BaseColor.ORANGE);
             }
             for (int j = 0; j < newList.size(); j++) {
+                table.addCell(""+(j+1));
                 table.addCell("" + newList.get(j).getItemName());
                 table.addCell("" + newList.get(j).getQuantity());
                 table.addCell("" + newList.get(j).getUnitPrice());
@@ -476,7 +453,7 @@ public class SelectedItem extends AppCompatActivity {
 
             doc.add(codeQRImage);
 
-            Toast.makeText(this, "The file is created Successfully", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "The file was created Successfully", Toast.LENGTH_LONG).show();
            // totalPrice_Text.setText("PDF in Documents  internal memory");
             doc.close();
 
@@ -494,6 +471,7 @@ public class SelectedItem extends AppCompatActivity {
                     //permission granted
                     try {
                         createPDF();
+                        //openExternalMemory();
 
                     } catch (FileNotFoundException ex) {
                         ex.printStackTrace();
@@ -556,5 +534,15 @@ public class SelectedItem extends AppCompatActivity {
 
 
 
+//on back button pressed
 
+    @Override
+    public void onBackPressed() {
+      Intent mainClassIntent = new Intent(SelectedItem.this, MainActivity.class);
+      startActivity(mainClassIntent);
+
+        overridePendingTransition(R.transition.slin_in_left,R.transition.slide_out_right);
+
+        super.onBackPressed();
+    }
 }

@@ -18,7 +18,10 @@ import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     ActionBarDrawerToggle actionToggle;
     NavigationView navigationView;
-    TextView textView;
+    TextView textView, textchange;
     Button addB, listB;
     TextInputEditText productField, quantityField, unitPriceField;
 
@@ -46,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //tool bar implementation
         toolbar =  findViewById(R.id.toolbar);
+        textchange = findViewById(R.id.textchange);
+
         collapsingToolbarLayout = findViewById(R.id.collapseBar);
         setSupportActionBar(toolbar);
 
@@ -56,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         productField = findViewById(R.id.productId);
         quantityField = findViewById(R.id.quantityId);
         unitPriceField = findViewById(R.id.unitPrice);
+        ImageView imageView = findViewById(R.id.imageViewId);
         //**********************************************************************************
         addB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,21 +74,21 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (stocks.size() < 1) {
-                    Toast.makeText(MainActivity.this, "No product is in the List", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "No product in the List", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent listIntent = new Intent(MainActivity.this, SelectedItem.class);
-                    ActivityOptionsCompat compat = ActivityOptionsCompat
-                            .makeSceneTransitionAnimation(MainActivity.this, null);
 
-                    startActivity(listIntent, compat.toBundle());
+                    startActivity(listIntent);
+                    overridePendingTransition(R.transition.slide_in_right,R.transition.slide_out_left);
 
                 }
             }
         });
-        //transaction of this activity to next
-        TransitionInflater tf = TransitionInflater.from(this);
-       Transition t = tf.inflateTransition(R.transition.transition2);
 
+        //**********************************************************************************************
+         Animation expandIn = AnimationUtils.loadAnimation(MainActivity.this,R.anim.expanding_in);
+        imageView.startAnimation(expandIn);
+        textchange.startAnimation(expandIn);
 
     }
 

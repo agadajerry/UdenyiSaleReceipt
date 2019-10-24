@@ -29,6 +29,7 @@
                 app:titleMarginTop="155dp">
 
                 <ImageView
+                   android:id="@+id/imageViewId"
                     android:layout_width="90dp"
                     android:layout_height="88dp"
                     android:layout_gravity="center"

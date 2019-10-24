@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <item
         android:id="@+id/printId"
         android:icon="@drawable/ic_printer"
@@ -8,7 +9,7 @@
         android:iconTint="@color/textColor"/>
     <item
         android:id="@+id/clearId"
-        android:icon="@drawable/ic_delete_forever_black_24dp"
+        android:icon="@drawable/ic_delete"
         android:iconTint="@color/textColor"
         android:title="Clear"/>
 </menu>
